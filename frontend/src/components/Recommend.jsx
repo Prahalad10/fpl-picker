@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { get, POSITIONS } from "../api";
+import { get, POSITIONS, hideBrokenImage } from "../api";
 import FixtureList from "./FixtureList";
 
 // "Recommend" tab: choose a position and budget, get the top 5 picks
@@ -33,11 +33,16 @@ export default function Recommend({ watchlist, onToggleWatch, onSelect }) {
           <button className="star" onClick={(e) => { e.stopPropagation(); onToggleWatch(r.player); }}>
             {watchlist.some((w) => w.id === r.player.id) ? "★" : "☆"}
           </button>
-          <h3>
-            {i + 1}. {r.player.name} <small>{r.player.team} · £{r.player.price.toFixed(1)}m</small>
-          </h3>
-          <p>Score <b>{r.score}</b> · {r.reason}</p>
-          <FixtureList fixtures={r.nextFixtures} />
+          <span className="rank">{i + 1}</span>
+          <img className="photo" src={r.player.photo} alt="" onError={hideBrokenImage} />
+          <div>
+            <h3>{r.player.name}</h3>
+            <p className="meta">
+              <img className="badge" src={r.player.badge} alt="" /> {r.player.team}, £{r.player.price.toFixed(1)}m
+            </p>
+            <p>Score <b>{r.score}</b>. {r.reason}</p>
+            <FixtureList fixtures={r.nextFixtures} />
+          </div>
         </div>
       ))}
     </>

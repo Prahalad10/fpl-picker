@@ -31,22 +31,29 @@ export default function App() {
   const shared = { watchlist, onToggleWatch: toggleWatch, onSelect: setSelected };
 
   return (
-    <div className="app">
-      <h1>⚽ FPL Picker</h1>
+    <>
+      {/* Purple header with mown-grass stripes, drawn in CSS */}
+      <header className="hero">
+        <div className="app">
+          <h1>FPL Picker</h1>
+          <p>Find your next transfer, using live data from Fantasy Premier League.</p>
+          <nav>
+            {TABS.map((t) => (
+              <button key={t} className={tab === t ? "active" : ""} onClick={() => setTab(t)}>
+                {t === "Watchlist" ? `Watchlist (${watchlist.length})` : t}
+              </button>
+            ))}
+          </nav>
+        </div>
+      </header>
 
-      <nav>
-        {TABS.map((t) => (
-          <button key={t} className={tab === t ? "active" : ""} onClick={() => setTab(t)}>
-            {t === "Watchlist" ? `Watchlist (${watchlist.length})` : t}
-          </button>
-        ))}
-      </nav>
-
-      {tab === "Players" && <Players {...shared} />}
-      {tab === "Recommend" && <Recommend {...shared} />}
-      {tab === "Watchlist" && <PlayerTable players={watchlist} {...shared} />}
+      <main className="app">
+        {tab === "Players" && <Players {...shared} />}
+        {tab === "Recommend" && <Recommend {...shared} />}
+        {tab === "Watchlist" && <PlayerTable players={watchlist} {...shared} />}
+      </main>
 
       {selected && <PlayerDetail player={selected} onClose={() => setSelected(null)} />}
-    </div>
+    </>
   );
 }

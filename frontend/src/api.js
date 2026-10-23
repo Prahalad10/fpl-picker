@@ -13,3 +13,8 @@ export async function get(path, params = {}) {
 }
 
 export const POSITIONS = ["GKP", "DEF", "MID", "FWD"];
+
+// Some new signings have no photo yet: hide the broken image instead of showing an icon
+export function hideBrokenImage(e) {
+  e.currentTarget.style.visibility = "hidden";
+}

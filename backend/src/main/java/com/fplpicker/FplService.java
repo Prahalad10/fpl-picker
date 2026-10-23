@@ -22,6 +22,8 @@ public class FplService {
     // FPL numbers positions 1-4; index 0 is unused
     private static final String[] POSITIONS = {"", "GKP", "DEF", "MID", "FWD"};
     private static final Duration CACHE_TIME = Duration.ofMinutes(30);
+    // Premier League image server; files are named by the "code" fields in the FPL data
+    private static final String IMAGES = "https://resources.premierleague.com/premierleague25";
 
     // HTTP client for the official (free, no key needed) FPL API
     private final RestClient fpl = RestClient.builder()
@@ -43,8 +45,10 @@ public class FplService {
         JsonNode data = fpl.get().uri("/bootstrap-static/").retrieve().body(JsonNode.class);
 
         Map<Integer, String> teams = new HashMap<>();
+        Map<Integer, String> badges = new HashMap<>();
         for (JsonNode t : data.get("teams")) {
             teams.put(t.get("id").asInt(), t.get("name").asString());
+            badges.put(t.get("id").asInt(), IMAGES + "/badges/" + t.get("code").asInt() + ".svg");
         }
 
         List<Player> list = new ArrayList<>();
@@ -63,7 +67,9 @@ public class FplService {
                     e.get("total_points").asInt(),
                     Double.parseDouble(e.get("form").asString()),
                     e.get("status").asString(),
-                    e.get("news").asString()));
+                    e.get("news").asString(),
+                    IMAGES + "/photos/players/110x140/" + e.get("code").asInt() + ".png",
+                    badges.get(teamId)));
         }
 
         // Every match that hasn't been played yet

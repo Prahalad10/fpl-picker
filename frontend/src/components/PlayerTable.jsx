@@ -1,6 +1,8 @@
+import { hideBrokenImage } from "../api";
+
 // Reusable table of players, used by the Players and Watchlist tabs
 export default function PlayerTable({ players, watchlist, onToggleWatch, onSelect }) {
-  if (players.length === 0) return <p>No players to show.</p>;
+  if (players.length === 0) return <p className="empty">No players to show.</p>;
 
   return (
     <table>
@@ -18,10 +20,13 @@ export default function PlayerTable({ players, watchlist, onToggleWatch, onSelec
                 {watchlist.some((w) => w.id === p.id) ? "★" : "☆"}
               </button>
             </td>
-            <td>
+            <td className="name">
+              <img className="face" src={p.photo} alt="" onError={hideBrokenImage} />
               {p.name} {p.status !== "a" && <span className="warn" title={p.news}>⚠</span>}
             </td>
-            <td>{p.team}</td>
+            <td>
+              <img className="badge" src={p.badge} alt="" /> {p.team}
+            </td>
             <td>{p.position}</td>
             <td>£{p.price.toFixed(1)}m</td>
             <td>{p.totalPoints}</td>

@@ -13,5 +13,7 @@ public record Player(
         int totalPoints,
         double form,        // average points over the last few gameweeks
         String status,      // "a" means available
-        String news         // injury or suspension note, empty if none
+        String news,        // injury or suspension note, empty if none
+        String photo,       // URL of the player's headshot
+        String badge        // URL of the club badge
 ) {}
