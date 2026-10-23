@@ -1,0 +1,6 @@
+# Build outputs and downloaded dependencies (never commit these)
+backend/target/
+frontend/node_modules/
+frontend/dist/
+.idea/
+.vscode/
